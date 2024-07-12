@@ -1,6 +1,6 @@
 <template>
-  <div>
-
+  <div class="container">
+    <h1>World</h1>
   </div>
 </template>
 
@@ -9,5 +9,7 @@
 </script>
 
 <style scoped>
-
+  .container{
+      color:white;
+    }
 </style>
