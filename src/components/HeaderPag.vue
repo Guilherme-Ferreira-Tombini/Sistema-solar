@@ -31,9 +31,11 @@
         margin-top: 10px;
     }
     .navigation{
-        width: 17%;
-        display: grid;
-        grid-template-columns: 50% 50%;
+        width: 300px;
+        padding: 20px;
+        display: flex;
+        flex-direction: row;
         align-items: center;
+        justify-content: space-around;
     }
 </style>
