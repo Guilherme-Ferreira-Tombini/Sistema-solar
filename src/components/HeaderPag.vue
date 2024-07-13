@@ -22,6 +22,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        font-family: "Michroma";
     }
     .simbol{
         width: 100px;

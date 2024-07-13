@@ -6,3 +6,15 @@ a{
     text-decoration: none;
     color: white;
 }
+
+@font-face {
+    font-family: "Michroma";
+    src: local(Michroma), url(./fonts/Michroma-Regular.ttf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Abel";
+    src: local(Abel), url(./fonts/Abel-Regular.ttf);
+    font-weight: 400;
+ }
