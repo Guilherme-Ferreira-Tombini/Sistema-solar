@@ -19,3 +19,13 @@ a{
     src: local(Abel), url(./fonts/Abel-Regular.ttf);
     font-weight: 600;
  }
+
+ ::-webkit-scrollbar{
+    width: 12px;
+    background-color: #000000;
+}
+  
+::-webkit-scrollbar-thumb{
+    background-color: #202340;
+    border-radius: 10px;
+}
