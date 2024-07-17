@@ -28,7 +28,7 @@
         width: 100px;
         height: 90px;
         margin-left: 40px;
-        margin-top: 10px;
+        margin-top: 7px;
     }
     .navigation{
         width: 300px;
