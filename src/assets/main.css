@@ -17,5 +17,5 @@ a{
 @font-face {
     font-family: "Abel";
     src: local(Abel), url(./fonts/Abel-Regular.ttf);
-    font-weight: 400;
+    font-weight: 600;
  }
