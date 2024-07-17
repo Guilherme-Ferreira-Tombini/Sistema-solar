@@ -81,7 +81,7 @@
   }
 
   .info, h2{
-    font-size: 22px;
+    font-size: 23px;
     text-align: justify;
   }
 </style>
