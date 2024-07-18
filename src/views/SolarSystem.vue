@@ -1,15 +1,26 @@
 <template>
   <div class="container">
-    <h1>World</h1>
+    <System/>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+  import { defineComponent } from 'vue';
+  import System from '../components/ThreeJS/System.vue'
+
+  export default defineComponent({
+    name: 'SolarSystem',
+    components: {
+      System,
+    },
+  });
 
 </script>
 
 <style scoped>
   .container{
-      color:white;
-    }
+    display: grid;
+    grid-column: 100%;
+    width: 100%;
+  }
 </style>

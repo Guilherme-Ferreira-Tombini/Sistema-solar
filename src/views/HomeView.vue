@@ -24,7 +24,7 @@
   import Moon from '../components/ThreeJS/Moon.vue'
 
   export default defineComponent({
-  name: 'AboutView',
+  name: 'HomeView',
   components: {
     Moon,
   },
