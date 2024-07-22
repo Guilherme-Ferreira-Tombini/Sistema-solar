@@ -39,21 +39,14 @@ export default defineComponent({
 
         // Sol
         const textureLoader = new THREE.TextureLoader();
-        const sunTexture = textureLoader.load('/Sun.jpg', 
-          (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-            texture.needsUpdate = true;
-          }
-        );
+        const sunTexture = textureLoader.load('/Sun.jpg');
         const sunGeometry = new THREE.SphereGeometry(5, 32, 32);
         const sunMaterial = new THREE.MeshStandardMaterial({ map: sunTexture });
         const sun = new THREE.Mesh(sunGeometry, sunMaterial);
         scene.add(sun);
 
-        // Luz
-        const ambient = new THREE.AmbientLight(0x111111, 400);
+        // Luz ambiente
+        const ambient = new THREE.AmbientLight(0xffffff,3);
         scene.add(ambient);
 
         // Planetas
@@ -73,14 +66,7 @@ export default defineComponent({
         scene.add(earthGroup);
 
         planetData.forEach((data) => {
-          const planetTexture = textureLoader.load(`${data.texture}`, 
-            (texture) => {
-              texture.wrapS = THREE.RepeatWrapping;
-              texture.wrapT = THREE.RepeatWrapping;
-              texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-              texture.needsUpdate = true;
-            }
-          );
+          const planetTexture = textureLoader.load(`${data.texture}`);
           const geometry = new THREE.SphereGeometry(data.size, 20, 20);
           const material = new THREE.MeshStandardMaterial({ map: planetTexture });
           const planet = new THREE.Mesh(geometry, material);
@@ -101,14 +87,7 @@ export default defineComponent({
         });
 
         // Lua
-        const moonTexture = textureLoader.load('/IMGMoon.jpg', 
-          (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-            texture.needsUpdate = true;
-          }
-        );
+        const moonTexture = textureLoader.load('/IMGMoon.jpg');
         const moonGeometry = new THREE.SphereGeometry(0.2, 20, 20);
         const moonMaterial = new THREE.MeshStandardMaterial({ map: moonTexture });
         const moon = new THREE.Mesh(moonGeometry, moonMaterial);
