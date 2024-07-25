@@ -1,5 +1,8 @@
 <template>
   <div ref="threeContainer" class="three-container"></div>
+  <div v-if="selectedPlanet" class="info-container">
+    <h2>{{ selectedPlanet.name }}</h2>
+  </div>
 </template>
 
 <script lang="ts">
@@ -11,6 +14,7 @@ export default defineComponent({
   name: 'ThreeView',
   setup() {
     const threeContainer = ref<HTMLElement | null>(null);
+    const selectedPlanet = ref<{ name: string } | null>(null);
 
     onMounted(() => {
       if (threeContainer.value) {
@@ -37,6 +41,10 @@ export default defineComponent({
         controls.dampingFactor = 0.25; // Fator de amortecimento
         controls.screenSpacePanning = false; // Desabilitar o pan em espaço de tela
 
+        // Raycaster e Vector2 para o mouse
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
         // Sol
         const textureLoader = new THREE.TextureLoader();
         const sunTexture = textureLoader.load('/Sun.jpg');
@@ -46,43 +54,44 @@ export default defineComponent({
         scene.add(sun);
 
         // Luz ambiente
-        const ambient = new THREE.AmbientLight(0xffffff,3);
+        const ambient = new THREE.AmbientLight(0xffffff, 3);
         scene.add(ambient);
 
         // Planetas
-        const planets: { mesh: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial>; distance: number; angle: number; speed: number; }[] = [];
+        const planets: { 
+          mesh: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial>; 
+          distance: number; 
+          angle: number; 
+          speed: number;
+          name: string;
+          
+        }[] = [];
+
         const planetData = [
-          { texture:'/Mercury.jpg', size: 0.5, distance: 10, speed: 0.04 },  // Mercury
-          { texture:'/Venus.jpg', size: 0.7, distance: 15, speed: 0.02 },  // Venus
-          { texture:'/Earth.jpg', size: 0.8, distance: 20, speed: 0.01 },  // Earth
-          { texture:'/Mars.jpg', size: 0.6, distance: 25, speed: 0.008 },  // Mars
-          { texture:'/Jupiter.jpg', size: 1.2, distance: 35, speed: 0.005 },  // Jupiter
-          { texture:'/Saturn.jpg', size: 1.0, distance: 45, speed: 0.004 },  // Saturn
-          { texture:'/Uranus.jpg', size: 0.7, distance: 55, speed: 0.003 },  // Uranus
-          { texture:'/Neptune.jpg', size: 0.6, distance: 65, speed: 0.002 }   // Neptune
+          { name: 'Mercúrio', texture: '/Mercury.jpg', size: 0.5, distance: 10 },
+          { name: 'Vênus', texture: '/Venus.jpg', size: 0.7, distance: 15 },
+          { name: 'Terra', texture: '/Earth.jpg', size: 0.8, distance: 20 },
+          { name: 'Marte', texture: '/Mars.jpg', size: 0.6, distance: 25 },
+          { name: 'Júpiter', texture: '/Jupiter.jpg', size: 1.2, distance: 35 },
+          { name: 'Saturno', texture: '/Saturn.jpg', size: 1.0, distance: 45 },
+          { name: 'Urano', texture: '/Uranus.jpg', size: 0.7, distance: 55 },
+          { name: 'Netuno', texture: '/Neptune.jpg', size: 0.6, distance: 65 }
         ];
 
-        const earthGroup = new THREE.Group();
-        scene.add(earthGroup);
-
         planetData.forEach((data) => {
-          const planetTexture = textureLoader.load(`${data.texture}`);
+          const planetTexture = textureLoader.load(data.texture);
           const geometry = new THREE.SphereGeometry(data.size, 20, 20);
           const material = new THREE.MeshStandardMaterial({ map: planetTexture });
           const planet = new THREE.Mesh(geometry, material);
-          planet.position.x = data.distance;
-
-          if (data.texture === '/Earth.jpg') {
-            earthGroup.add(planet);
-          } else {
-            scene.add(planet);
-          }
+          planet.position.set(data.distance, 0, 0);
+          scene.add(planet);
 
           planets.push({
             mesh: planet,
             distance: data.distance,
-            angle: Math.random() * Math.PI * 2,  // Ângulo inicial aleatório
-            speed: data.speed
+            angle: Math.random() * Math.PI * 2,
+            speed: 0.005,
+            name: data.name,
           });
         });
 
@@ -91,7 +100,38 @@ export default defineComponent({
         const moonGeometry = new THREE.SphereGeometry(0.2, 20, 20);
         const moonMaterial = new THREE.MeshStandardMaterial({ map: moonTexture });
         const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-        earthGroup.add(moon);
+        scene.add(moon);
+
+        // Evento de clique
+        const onMouseClick = (event: MouseEvent) => {
+          if (!threeContainer.value) return;
+
+          // Calcula a posição do mouse em coordenadas normalizadas do dispositivo
+          const rect = threeContainer.value.getBoundingClientRect();
+          mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+          mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+          raycaster.setFromCamera(mouse, camera);
+
+          // Calcula os objetos intersectados
+          const intersects = raycaster.intersectObjects(scene.children, true);
+
+          if (intersects.length > 0) {
+            const intersectedObject = intersects[0].object;
+
+            // Encontra o planeta correspondente
+            const planet = planets.find(p => p.mesh === intersectedObject);
+            if (planet) {
+              selectedPlanet.value = {
+                name: planet.name,
+              };
+            }
+          }
+        };
+
+        // Adiciona o evento de clique ao contêiner
+        if (threeContainer.value) {
+          threeContainer.value.addEventListener('click', onMouseClick, false);
+        }
 
         // Animação
         const animate = () => {
@@ -99,16 +139,16 @@ export default defineComponent({
 
           // Atualiza a posição dos planetas
           planets.forEach(planet => {
-            planet.angle += planet.speed;  // Velocidade de rotação
+            planet.angle += planet.speed;
             planet.mesh.position.x = planet.distance * Math.cos(planet.angle);
             planet.mesh.position.z = planet.distance * Math.sin(planet.angle);
           });
 
           // Atualiza a posição da Lua
-          const earth = planets.find(planet => planet.mesh === earthGroup.children[0]);
+          const earth = planets.find(planet => planet.name === 'Terra');
           if (earth) {
-            moon.position.x = earth.mesh.position.x + 1.5 * Math.cos(earth.angle * 12);  // Órbita da Lua ao redor da Terra
-            moon.position.z = earth.mesh.position.z + 1.5 * Math.sin(earth.angle * 12);  // Órbita da Lua ao redor da Terra
+            moon.position.x = earth.mesh.position.x + 1.5 * Math.cos(earth.angle * 12);
+            moon.position.z = earth.mesh.position.z + 1.5 * Math.sin(earth.angle * 12);
           }
 
           renderer.render(scene, camera);
@@ -120,6 +160,7 @@ export default defineComponent({
 
     return {
       threeContainer,
+      selectedPlanet,
     };
   },
 });
@@ -129,5 +170,17 @@ export default defineComponent({
 .three-container {
   width: 100%;
   height: 100vh;
+  position: relative;
+}
+
+.info-container {
+  color:black;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 </style>
