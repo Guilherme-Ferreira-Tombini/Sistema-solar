@@ -1,7 +1,7 @@
 <template>
   <div ref="threeContainer" class="three-container"></div>
   <div v-if="selectedPlanet" class="info-container">
-    <h2>{{ selectedPlanet.name }}</h2>
+    <DescriptionPlanet :img="selectedPlanet.texture" :name="selectedPlanet.name" :description="selectedPlanet.name"/>
   </div>
 </template>
 
@@ -9,12 +9,14 @@
 import { defineComponent, onMounted, ref } from 'vue';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import DescriptionPlanet from '../DescriptionPlanet.vue'
 
 export default defineComponent({
   name: 'ThreeView',
+  components:{DescriptionPlanet},
   setup() {
     const threeContainer = ref<HTMLElement | null>(null);
-    const selectedPlanet = ref<{ name: string } | null>(null);
+    const selectedPlanet = ref<{ name: string; texture: string } | null>(null);
 
     onMounted(() => {
       if (threeContainer.value) {
@@ -64,7 +66,7 @@ export default defineComponent({
           angle: number; 
           speed: number;
           name: string;
-          
+          texture: string;
         }[] = [];
 
         const planetData = [
@@ -92,6 +94,7 @@ export default defineComponent({
             angle: Math.random() * Math.PI * 2,
             speed: 0.005,
             name: data.name,
+            texture: data.texture,
           });
         });
 
@@ -123,6 +126,7 @@ export default defineComponent({
             if (planet) {
               selectedPlanet.value = {
                 name: planet.name,
+                texture: planet.texture,
               };
             }
           }
@@ -169,18 +173,26 @@ export default defineComponent({
 <style scoped>
 .three-container {
   width: 100%;
-  height: 100vh;
+  height: 98vh;
   position: relative;
 }
 
 .info-container {
-  color:black;
+  color: rgb(255, 255, 255);
+  display: grid;
+  font-family: "Michroma";
+  grid-template-columns: 90%;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  top: 10px;
-  left: 10px;
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  width: 80%;
+  height: 100vh;
+  left: 10%;
+  bottom: 0 auto;
+  border-top-left-radius: 95px;
+  border-top-right-radius: 95px;
+  background-color: #202340;
 }
+
 </style>
