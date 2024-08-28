@@ -1,17 +1,17 @@
 <template>
   <div class="container">
-    <System/>
+    
   </div>
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import System from '../components/ThreeJS/System.vue'
+  
 
   export default defineComponent({
     name: 'SolarSystem',
     components: {
-      System,
+     // System,
     },
   });
 

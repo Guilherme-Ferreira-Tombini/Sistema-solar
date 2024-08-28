@@ -1,6 +1,6 @@
 <template>
     <div class="data-container">
-        <Planets :img="img" />
+       <!-- <Planets :img="img" /> -->
         <h2>{{ name }}</h2>
         <p>{{ description }}</p>
         
@@ -14,12 +14,12 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-    import Planets from './ThreeJS/Planets.vue';
+   // import Planets from './ThreeJS/Planets.vue';
 
     export default defineComponent({
         name: 'ThreeView',
         components:{
-            Planets
+           // Planets
         },
         props: {
             img: {
