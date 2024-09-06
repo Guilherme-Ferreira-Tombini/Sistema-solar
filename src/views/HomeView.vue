@@ -5,7 +5,7 @@
     </div>
 
     <div class="moon">
-      <Moon/>
+      <Planet/>
     </div>
 
     <div class="info-container">
@@ -21,12 +21,12 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import Moon from '../components/ThreeJS/Moon.vue'
+  import Planet from '../components/ThreeJS/Mercury.vue'
 
   export default defineComponent({
   name: 'HomeView',
   components: {
-    Moon,
+    Planet,
   },
 });
 

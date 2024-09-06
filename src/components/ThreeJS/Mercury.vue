@@ -32,7 +32,7 @@
 
           // Textura
           const textureLoader = new THREE.TextureLoader();
-          const moonTexture = textureLoader.load('/IMGMoon.jpg', 
+          const mercuryTexture = textureLoader.load('/Mercury.jpg', 
             (texture) => {
               texture.wrapS = THREE.RepeatWrapping;
               texture.wrapT = THREE.RepeatWrapping;
@@ -42,14 +42,14 @@
           );
   
           // Geometria da esfera
-          const geometry = new THREE.SphereGeometry(2.9, 45, 45);
-          const material = new THREE.MeshStandardMaterial({ map: moonTexture });
-          const moon = new THREE.Mesh(geometry, material);
-          scene.add(moon);
+          const geometry = new THREE.SphereGeometry(2.7, 45, 45);
+          const material = new THREE.MeshStandardMaterial({ map: mercuryTexture });
+          const mercury = new THREE.Mesh(geometry, material);
+          scene.add(mercury);
   
           // Iluminação
           const light = new THREE.DirectionalLight(0xffffff, 8.0);
-          light.position.set(-150,0,-45);  // Coloca a luz à esquerda da esfera
+          light.position.set(120,30,45);  // Coloca a luz à esquerda da esfera
           scene.add(light);
 
           const ambient = new THREE.AmbientLight(0x111111, 2.5);
@@ -58,7 +58,7 @@
           // Função de animação
           const animate = () => {
             requestAnimationFrame(animate);
-            moon.rotation.y += 0.005;
+            mercury.rotation.y += 0.005;
             renderer.render(scene, camera);
           };
   
