@@ -1,17 +1,17 @@
 <template>
   <div class="container">
-    
+    <MenuComponent text="Planets" link="/solar-system-star"/>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  
+import MenuComponent from '@/components/MenuComponent.vue';
+import { defineComponent } from 'vue';
 
   export default defineComponent({
     name: 'SolarSystem',
     components: {
-     // System,
+      MenuComponent,
     },
   });
 

@@ -1,12 +1,13 @@
 <template>
     <div class="menu">
-        <h5>{{text}}</h5>
+       <a :href="link">
+         <p>{{text}}</p>
+       </a> 
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-   // import Planets from './ThreeJS/Planets.vue';
 
     export default defineComponent({
         props:{
@@ -26,7 +27,9 @@ import { defineComponent } from 'vue';
     .menu{
         background-color: #3E4374;
         padding: 20px;
-        border-radius: 30px;
+        border-radius: 30px 0 0 30px;
         position: absolute;
+        right: 0;
+        font-family: "Michroma";
     }
 </style>
