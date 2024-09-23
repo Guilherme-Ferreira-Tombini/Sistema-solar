@@ -1,17 +1,17 @@
 <template>
     <div>
-       <Star/>
+       <Planets img="/Sun.jpg" :tamanho="2"/>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Star from '../components/ThreeJS/Star.vue';
+import Planets from '../components/ThreeJS/Planets.vue';
 
 export default defineComponent({
   name: 'StarView',
   components: {
-    Star,
+    Planets,
   },
 })
 </script>

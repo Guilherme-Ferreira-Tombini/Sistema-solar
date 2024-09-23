@@ -5,10 +5,21 @@
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
   import * as THREE from 'three';
+  import { string } from 'three/examples/jsm/nodes/Nodes.js';
   
   export default defineComponent({
     name: 'ThreeView',
-    setup() {
+    props:{
+      img:{
+        type: String,
+        required: true,
+      },
+      tamanho:{
+        type: Number,
+        required: true,
+      }
+    },
+    setup(props) {
       const threeContainer = ref<HTMLElement | null>(null);
   
       onMounted(() => {
@@ -32,18 +43,19 @@
 
           // Textura
           const textureLoader = new THREE.TextureLoader();
-          const sunTexture = textureLoader.load('/Sun.jpg', 
-            (texture) => {
-              texture.wrapS = THREE.RepeatWrapping;
-              texture.wrapT = THREE.RepeatWrapping;
-              texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-              texture.needsUpdate = true;
-            }
-          );
+          const texture = textureLoader.load(props.img, 
+              (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+                texture.needsUpdate = true;
+              }
+            );
+         
   
           // Geometria da esfera
-          const geometry = new THREE.SphereGeometry(3, 45, 45);
-          const material = new THREE.MeshStandardMaterial({ map: sunTexture });
+          const geometry = new THREE.SphereGeometry(props.tamanho, 45, 45);
+          const material = new THREE.MeshStandardMaterial({ map: texture });
           const mercury = new THREE.Mesh(geometry, material);
           scene.add(mercury);
   
