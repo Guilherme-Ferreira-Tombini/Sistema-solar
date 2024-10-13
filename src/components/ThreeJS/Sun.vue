@@ -8,17 +8,7 @@
   
   export default defineComponent({
     name: 'ThreeView',
-    props:{
-      img:{
-        type: String,
-        required: true,
-      },
-      tamanho:{
-        type: Number,
-        required: true,
-      }
-    },
-    setup(props) {
+    setup() {
       const threeContainer = ref<HTMLElement | null>(null);
   
       onMounted(() => {
@@ -42,34 +32,30 @@
 
           // Textura
           const textureLoader = new THREE.TextureLoader();
-          const texture = textureLoader.load(props.img, 
-              (texture) => {
-                texture.wrapS = THREE.RepeatWrapping;
-                texture.wrapT = THREE.RepeatWrapping;
-                texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-                texture.needsUpdate = true;
-              }
-            );
-         
+          const mercuryTexture = textureLoader.load('/Sun.jpg', 
+            (texture) => {
+              texture.wrapS = THREE.RepeatWrapping;
+              texture.wrapT = THREE.RepeatWrapping;
+              texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+              texture.needsUpdate = true;
+            }
+          );
   
           // Geometria da esfera
-          const geometry = new THREE.SphereGeometry(props.tamanho, 60, 60);
-          const material = new THREE.MeshStandardMaterial({ map: texture });
-          const planet = new THREE.Mesh(geometry, material);
-          scene.add(planet);
+          const geometry = new THREE.SphereGeometry(2.7, 45, 45);
+          const material = new THREE.MeshStandardMaterial({ map: mercuryTexture });
+          const mercury = new THREE.Mesh(geometry, material);
+          scene.add(mercury);
   
           // Iluminação
-          const light = new THREE.DirectionalLight(0xffffff, 8.0);
-          light.position.set(120,30,45);  // Coloca a luz à esquerda da esfera
-          scene.add(light);
 
-          const ambient = new THREE.AmbientLight(0x111111,30);
+          const ambient = new THREE.AmbientLight(0x111111, 1500);
           scene.add(ambient);
   
           // Função de animação
           const animate = () => {
             requestAnimationFrame(animate);
-            planet.rotation.y += 0.005;
+            mercury.rotation.y += 0.005;
             renderer.render(scene, camera);
           };
   
@@ -86,9 +72,8 @@
   
 <style scoped>
   .three-container {
-    width: 300px;
-    height: 300px;
-   
+    width: 100%;
+    height: 100vh;
   }
 </style>
   

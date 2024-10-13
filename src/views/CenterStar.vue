@@ -1,17 +1,20 @@
 <template>
     <div>
-       <Planets img="/Sun.jpg" :tamanho="2"/>
+       <MenuComponent text="Planets" link="/solar-system"/>
+       <Sun/>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Planets from '../components/ThreeJS/Planets.vue';
+import MenuComponent from '@/components/MenuComponent.vue';
+import Sun from '@/components/ThreeJS/Sun.vue';
 
 export default defineComponent({
   name: 'StarView',
   components: {
-    Planets,
+    Sun,
+    MenuComponent,
   },
 })
 </script>
