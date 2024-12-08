@@ -3,15 +3,10 @@
         <div>
             <img src="/Simbol.png" class="simbol">
         </div>
-        <nav class="navigation">
-            <RouterLink to="/">Home</RouterLink>
-            <RouterLink to="/solar-system">System</RouterLink>
-        </nav>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { RouterLink } from 'vue-router';
     
 </script>
 
@@ -29,13 +24,5 @@
         height: 90px;
         margin-left: 40px;
         margin-top: 7px;
-    }
-    .navigation{
-        width: 300px;
-        padding: 20px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
     }
 </style>

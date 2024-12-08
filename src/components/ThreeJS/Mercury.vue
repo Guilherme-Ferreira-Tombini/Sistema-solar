@@ -42,7 +42,7 @@
           );
   
           // Geometria da esfera
-          const geometry = new THREE.SphereGeometry(2.7, 45, 45);
+          const geometry = new THREE.SphereGeometry(1.9, 45, 45);
           const material = new THREE.MeshStandardMaterial({ map: mercuryTexture });
           const mercury = new THREE.Mesh(geometry, material);
           scene.add(mercury);

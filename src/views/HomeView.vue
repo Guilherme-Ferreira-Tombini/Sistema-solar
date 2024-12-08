@@ -1,13 +1,5 @@
 <template>
   <div class="container">
-    <div class="rectangle">
-      <img src="/Rectangle1.png" class="img">
-    </div>
-
-    <div class="moon">
-      <Planet/>
-    </div>
-
     <div class="info-container">
       <div class="info">
         <h2>Quer saber mais sobre o sistema solar? Então acessou o site certo. 
@@ -15,22 +7,19 @@
         </h2>
       </div>
     </div>
-
   </div>
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import Planet from '../components/ThreeJS/Mercury.vue'
+  
 
   export default defineComponent({
   name: 'HomeView',
   components: {
-    Planet,
+    
   },
 });
-
- 
 </script>
 
 <style scoped>
@@ -50,10 +39,6 @@
    width: 100%;
    height: 680px;
    left: -4px;
-  }
-
-  .moon{
-    z-index: 2;
   }
 
   .info-container{
