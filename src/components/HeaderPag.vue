@@ -1,14 +1,10 @@
 <template>
     <div class="container">
-        <div>
+        <a href="/">
             <img src="/Simbol.png" class="simbol">
-        </div>
+        </a>
     </div>
 </template>
-
-<script setup lang="ts">
-    
-</script>
 
 <style scoped>
     .container{
