@@ -33,29 +33,39 @@ export default defineComponent({
         // Carregar o modelo GLTF/GLB
         const loader = new GLTFLoader();
         loader.load(
-          "src/components/ThreeJS/Foguete.glb", 
+          "src/components/ThreeJS/FogueteGirando.glb", 
           (gltf: GLTF) => {
-            const model = gltf.scene; // Tipagem do modelo carregado
-            model.position.set(0, 2, 0);
-            model.scale.set(1, 1, 1); // Ajuste o tamanho do modelo
+            const model = gltf.scene;
+            model.position.set(-0.3, 3, -1);
+            model.rotation.x = 0; 
+            model.rotation.z = -(Math.PI/2); 
+            model.scale.set(0.7, 0.7, 0.7); // Ajuste o tamanho do modelo
             scene.add(model);
-            scene.background = new THREE.Color(0xcccccc);
 
+            const mixer = new THREE.AnimationMixer(model);
+            if (gltf.animations && gltf.animations.length > 0) {
+              gltf.animations.forEach((clip) => {
+                const action = mixer.clipAction(clip);
+                action.timeScale = 0.5;
+                action.play();
+              });
+            }
+
+            // Animação para girar o foguete no eixo X mantendo o Y
+            const clock = new THREE.Clock();
+            const animate = () => {
+              requestAnimationFrame(animate);
+              mixer.update(clock.getDelta()); // Atualiza a animação do modelo
+              renderer.render(scene, camera);
+            };
+
+            animate();
           },
           undefined, // onProgress
           (error) => {
             console.error("Erro ao carregar o modelo:", error);
           }
         );
-
-        // Animação
-        const animate = () => {
-          requestAnimationFrame(animate);
-          renderer.render(scene, camera);
-        };
-
-        animate();
-
       }
     });
 
@@ -69,7 +79,7 @@ export default defineComponent({
 <style scoped>
 .scene-container {
   width: 100%;
-  height: auto;
+  height: 340px;
   overflow: hidden;
   margin: 0;
   padding: 0;
