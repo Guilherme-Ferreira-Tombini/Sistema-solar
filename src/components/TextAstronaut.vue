@@ -1,5 +1,5 @@
 <template>
-    <div class="container1">
+    <div id="text" class="container1">
         <div class="image">
             <img src="/Astronauta.png" alt="">
         </div>

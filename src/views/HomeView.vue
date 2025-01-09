@@ -2,8 +2,9 @@
   <div class="container">
       <TextAstronaut/>
       <Foguete/>
-      <div class="container-start">
-        <a href="/solar-system">
+      <h1 class="messageText"></h1>
+      <div id="button" class="container-start">
+        <a @click="handle">
           <div class="start">
             <h3>START</h3>
           </div>
@@ -14,9 +15,10 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, onMounted, ref } from 'vue';
   import Foguete from '@/components/ThreeJS/Foguete.vue';
   import TextAstronaut from '@/components/TextAstronaut.vue';
+  import { useRouter } from 'vue-router';
 
   export default defineComponent({
   name: 'HomeView',
@@ -24,7 +26,38 @@
     TextAstronaut,
     Foguete,
   },
-});
+  setup() {
+    const router = useRouter();
+    const button = ref<HTMLElement | null>(null);
+    const text = ref<HTMLElement | null>(null);
+    const load = ref<HTMLElement | null>(null);
+
+    onMounted(() => {
+      button.value = document.getElementById("button");
+      text.value = document.getElementById("text");
+      load.value = document.querySelector('.messageText');
+    });
+
+    const handle = () => {
+      setTimeout(() => {
+        router.push("/solar-system");
+      }, 8000); // Tempo de espera (8 segundos)
+
+      if (button.value && text.value && load.value) {
+        button.value.style.display = 'none';
+        text.value.style.display = 'none';
+
+        load.value.style.display = "flex";
+        load.value.style.padding = "20px";
+        load.value.textContent = 'Aguarde o deslocamento...';
+      }
+    };
+
+    return {
+      handle,
+    };
+  },
+})
 </script>
 
 <style scoped>
@@ -36,6 +69,13 @@
     align-items: center;
     justify-items: center;
   }
+
+  .messageText{
+    display: none;
+    font-family: "Abel";
+    font-size: 35px;
+  }
+
   .container-start{
     margin-top: 66px;
     padding: 4px;
@@ -58,8 +98,9 @@
     background-color: red;
     border-radius: 100%;
     font-family: "Reddit";
+    cursor: pointer;
   }
-
+  
   .start:hover{
     transition-duration: 0.5s;
     width: 90px;
