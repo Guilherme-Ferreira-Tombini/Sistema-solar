@@ -1,7 +1,8 @@
 <template>
   <div class="container">
       <TextAstronaut/>
-      <Foguete/>
+      <Foguete id="rocket"/>
+      <FogueteFrente id="rocket2"/>
       <h1 class="messageText"></h1>
       <div id="button" class="container-start">
         <a @click="handle">
@@ -17,6 +18,7 @@
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
   import Foguete from '@/components/ThreeJS/Foguete.vue';
+  import FogueteFrente from '@/components/ThreeJS/FogueteFrente.vue';
   import TextAstronaut from '@/components/TextAstronaut.vue';
   import { useRouter } from 'vue-router';
 
@@ -25,17 +27,22 @@
   components: {
     TextAstronaut,
     Foguete,
+    FogueteFrente,
   },
   setup() {
     const router = useRouter();
     const button = ref<HTMLElement | null>(null);
     const text = ref<HTMLElement | null>(null);
     const load = ref<HTMLElement | null>(null);
+    const rocket = ref<HTMLElement | null>(null);
+    const rocket2 = ref<HTMLElement | null>(null);
 
     onMounted(() => {
       button.value = document.getElementById("button");
       text.value = document.getElementById("text");
       load.value = document.querySelector('.messageText');
+      rocket.value = document.getElementById('rocket');
+      rocket2.value = document.getElementById('rocket2');
     });
 
     const handle = () => {
@@ -43,13 +50,15 @@
         router.push("/solar-system");
       }, 8000); // Tempo de espera (8 segundos)
 
-      if (button.value && text.value && load.value) {
+      if (button.value && text.value && load.value && rocket.value && rocket2.value) {
         button.value.style.display = 'none';
         text.value.style.display = 'none';
 
         load.value.style.display = "flex";
         load.value.style.padding = "20px";
         load.value.textContent = 'Aguarde o deslocamento...';
+        rocket.value.style.display = "none";
+        rocket2.value.style.display = "block";
       }
     };
 
@@ -105,6 +114,10 @@
     transition-duration: 0.5s;
     width: 90px;
     height: 90px;
+  }
+
+  #rocket2{
+    display: none;
   }
 
 </style>
