@@ -48,7 +48,7 @@
     const handle = () => {
       setTimeout(() => {
         router.push("/solar-system");
-      }, 8000); // Tempo de espera (8 segundos)
+      }, 1000); // Tempo de espera (1 segundos)
 
       if (button.value && text.value && load.value && rocket.value && rocket2.value) {
         button.value.style.display = 'none';
