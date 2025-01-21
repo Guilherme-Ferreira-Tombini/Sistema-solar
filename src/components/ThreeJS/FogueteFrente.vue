@@ -45,7 +45,7 @@ export default defineComponent({
             if (gltf.animations && gltf.animations.length > 0) {
               gltf.animations.forEach((clip) => {
                 const action = mixer.clipAction(clip);
-                action.timeScale = 0.5;
+                action.timeScale = 1;
                 action.play();
               });
             }
@@ -55,12 +55,13 @@ export default defineComponent({
               requestAnimationFrame(animate);
               mixer.update(clock.getDelta()); // Atualiza a animação do modelo
 
-              if (model.position.x > 20) { 
+              
+              if (model.position.x > 27) { 
                   model.position.x = 0; 
                   camera.position.x = 0;
               }else{
-                  model.position.x += 0.15;
-                  camera.position.x += 0.1;
+                  model.position.x += 0.20;
+                  camera.position.x += 0.14;
               }
               
               renderer.render(scene, camera);
