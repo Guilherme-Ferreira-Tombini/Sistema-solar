@@ -18,7 +18,8 @@ export default defineComponent({
         // Configuração da cena
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 2, 5);
+        camera.position.set(-0.3, 2.9, 5);
+
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         sceneContainer.value.appendChild(renderer.domElement);
@@ -29,6 +30,33 @@ export default defineComponent({
         directionalLight.position.set(5, 10, 7.5);
         scene.add(ambientLight, directionalLight);
 
+        // Variáveis para as estrelas
+        let stars: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>;
+
+        // Adicionar estrelas
+        const addStars = () => {
+          const starGeometry = new THREE.BufferGeometry();
+          const starMaterial = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 0.1,
+          });
+
+          const starCount = 1000;
+          const starVertices = [];
+          for (let i = 0; i < starCount; i++) {
+            const x = (Math.random() - 0.5) * 200; // Espaço 3D
+            const y = (Math.random() - 0.5) * 200;
+            const z = (Math.random() - 0.5) * 200;
+            starVertices.push(x, y, z);
+          }
+
+          starGeometry.setAttribute("position", new THREE.Float32BufferAttribute(starVertices, 3));
+          stars = new THREE.Points(starGeometry, starMaterial);
+          scene.add(stars);
+        };
+
+        addStars(); // Chamar a função para adicionar as estrelas
+
         // Carregar o modelo GLTF/GLB
         const loader = new GLTFLoader();
         loader.load(
@@ -36,7 +64,6 @@ export default defineComponent({
           (gltf: GLTF) => {
             const model = gltf.scene;
             model.position.set(-0.3, 3, -1);
-            model.rotation.x = 0; 
             model.rotation.z = -(Math.PI/2); 
             model.scale.set(0.7, 0.7, 0.7); // Ajuste o tamanho do modelo
             scene.add(model);
@@ -53,16 +80,19 @@ export default defineComponent({
             const clock = new THREE.Clock();
             const animate = () => {
               requestAnimationFrame(animate);
-              mixer.update(clock.getDelta()); // Atualiza a animação do modelo
-
-              
-              if (model.position.x > 27) { 
-                  model.position.x = 0; 
-                  camera.position.x = 0;
-              }else{
-                  model.position.x += 0.20;
-                  camera.position.x += 0.14;
+               // Atualizar posição das estrelas
+               const starPositions = stars.geometry.attributes.position.array as Float32Array;
+              for (let i = 0; i < starPositions.length; i += 3) {
+                starPositions[i] -= 2; // Move da direita para a esquerda
+                if (starPositions[i] < -100) {
+                  starPositions[i] = 100; // Reposiciona para o lado direito
+                }
               }
+              stars.geometry.attributes.position.needsUpdate = true;
+
+              mixer.update(clock.getDelta()); // Atualiza a animação do modelo
+              model.position.x += 0.4;
+              camera.position.x += 0.3;
               
               renderer.render(scene, camera);
             };
@@ -86,8 +116,12 @@ export default defineComponent({
 
 <style scoped>
 .scene-container {
-  width: 100%;
-  height: 340px;
+  width: 100%; /* Aumenta a largura */
+  height: 598px; /* Aumenta a altura */
+  position: absolute;
+  top: 0;
+  left: 0;
   overflow: hidden;
+  z-index: -1; /* Garantir que fique no fundo */
 }
 </style>

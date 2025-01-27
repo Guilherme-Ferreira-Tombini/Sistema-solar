@@ -27,7 +27,7 @@
   components: {
     TextAstronaut,
     Foguete,
-    FogueteFrente,
+    FogueteFrente, 
   },
   setup() {
     const router = useRouter();
@@ -48,13 +48,14 @@
     const handle = () => {
       setTimeout(() => {
         router.push("/solar-system");
-      }, 1000); // Tempo de espera (1 segundos)
+      }, 450); // Tempo de espera (0,45 segundos)
 
       if (button.value && text.value && load.value && rocket.value && rocket2.value) {
         button.value.style.display = 'none';
         text.value.style.display = 'none';
 
         load.value.style.display = "flex";
+        load.value.style.marginTop = "300px";
         load.value.style.padding = "20px";
         load.value.textContent = 'Aguarde o deslocamento...';
         rocket.value.style.display = "none";
@@ -71,7 +72,7 @@
 
 <style scoped>
   .container{
-    height: 100vh;
+    height: 300px;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -86,10 +87,10 @@
   }
 
   .container-start{
-    margin-top: 66px;
+    margin-top: 340px;
     padding: 4px;
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -111,7 +112,7 @@
   }
   
   .start:hover{
-    transition-duration: 0.5s;
+    transition-duration: 0.6s;
     width: 90px;
     height: 90px;
   }
