@@ -92,7 +92,7 @@ export default defineComponent({
 
               mixer.update(clock.getDelta()); // Atualiza a animação do modelo
               model.position.x += 0.4;
-              camera.position.x += 0.3;
+              camera.position.x += 0.34;
               
               renderer.render(scene, camera);
             };
