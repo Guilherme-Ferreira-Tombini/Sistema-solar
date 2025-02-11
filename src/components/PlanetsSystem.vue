@@ -1,48 +1,117 @@
 <template>
     <div class="container">
-        <div id="ir">
-            <div class="botao">
-                <a href="http://">
-                    <img src="/esquerda.png">
-                </a>
-            </div>
+      <div id="ir">
+        <div class="botao" :class="{ disabled: currentIndex === 0 }" @click="prevPlanet">
+          <img src="/esquerda.png" />
         </div>
-        <Planet img="exemplo" :tamanho="4"/>
-        <div id="ir">
-           <div class="botao">
-                <a href="http://">
-                    <img src="/direita.png">
-                </a>
-           </div>
+      </div>
+  
+      <div>
+        <Planet 
+          v-if="planets.length > 0" 
+          :key="planets[currentIndex].Id" 
+          :img="currentImage" 
+          :tamanho="4" 
+        />
+        
+      </div>
+  
+      <div id="ir">
+        <div class="botao" :class="{ disabled: currentIndex === planets.length - 1 }" @click="nextPlanet">
+          <img src="/direita.png" />
         </div>
-
+      </div>
     </div>
-</template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import Planet from './ThreeJS/Planet.vue';
-import api from '@/api/Api';
-
-    export default defineComponent({
-    name: 'PlanetsSystem',
+  </template>
+  
+  <script lang="ts">
+  import { defineComponent, onMounted, ref, watch } from "vue";
+  import Planet from "./ThreeJS/Planet.vue";
+  import api from "@/api/Api";
+  
+  interface Planeta {
+    Id: number;
+    Name: string;
+    Description: string;
+    Link: string;
+  }
+  
+  export default defineComponent({
+    name: "PlanetsSystem",
     components: {
-        Planet,
+      Planet,
     },
-    })
-
-</script>
-
-<style scoped>
-    .container{
-        width: 100%;
-        height: auto;
-        display: grid;
-        grid-template-columns: 20% 60% 20%;
-        justify-content: center;
-        justify-items: center;
-    }
-   .botao{
+    setup() {
+      const planets = ref<Planeta[]>([]);
+      const currentIndex = ref<number>(0);
+      const currentImage = ref<string>("");
+  
+      const fetchPlanets = async () => {
+        try {
+          const response = await api.get<Planeta[]>("/");
+          planets.value = response.data;
+            console.log(planets.value[0].Id)
+          if (planets.value.length > 0) {
+            await fetchImage(planets.value[0].Id); // Busca a imagem do primeiro planeta
+          }
+        } catch (error) {
+          console.error("Erro ao buscar planetas:", error);
+        }
+      };
+  
+      // Função para buscar a imagem do planeta atual
+      const fetchImage = async (id: number) => {
+        try {
+          const response = await api.get<{ link: string }>(`${id}/link`);
+          currentImage.value = response.data.link;
+        } catch (error) {
+          console.error("Erro ao carregar imagem do planeta:", error);
+        }
+      };
+  
+      // Observa mudanças no índice atual e carrega a nova imagem
+      watch(currentIndex, async (newIndex) => {
+        if (planets.value.length > 0) {
+          await fetchImage(planets.value[newIndex].Id);
+        }
+      });
+  
+      // Funções de navegação
+      const nextPlanet = () => {
+        if (currentIndex.value < planets.value.length - 1) {
+          currentIndex.value++;
+        }
+      };
+  
+      const prevPlanet = () => {
+        if (currentIndex.value > 0) {
+          currentIndex.value--;
+        }
+      };
+  
+      onMounted(fetchPlanets);
+  
+      return {
+        planets,
+        currentIndex,
+        currentImage,
+        nextPlanet,
+        prevPlanet,
+      };
+    },
+  });
+  </script>
+  
+  <style scoped>
+  .container {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    justify-content: center;
+    justify-items: center;
+  }
+  .botao {
     background-color: rgb(23, 13, 168);
     padding: 15px;
     border-radius: 100%;
@@ -50,14 +119,20 @@ import api from '@/api/Api';
     flex-direction: column;
     justify-content: center;
     align-items: center;
-   }
-   .botao img{
+    cursor: pointer;
+  }
+  .botao img {
     width: 40px;
-   }
-   #ir{
+  }
+  #ir {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-   }
-</style>
+  }
+  .botao.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  </style>
+  
