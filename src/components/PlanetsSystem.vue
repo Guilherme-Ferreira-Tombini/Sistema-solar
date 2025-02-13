@@ -46,6 +46,7 @@
       const currentIndex = ref<number>(0);
       const currentImage = ref<string>("");
   
+  
       const fetchPlanets = async () => {
         try {
           const response = await api.get<Planeta[]>("/");
@@ -61,12 +62,7 @@
   
       // Função para buscar a imagem do planeta atual
       const fetchImage = async (id: number) => {
-        try {
-          const response = await api.get<{ link: string }>(`${id}/link`);
-          currentImage.value = response.data.link;
-        } catch (error) {
-          console.error("Erro ao carregar imagem do planeta:", error);
-        }
+          currentImage.value = `${api.defaults.baseURL}${id}/link`;
       };
   
       // Observa mudanças no índice atual e carrega a nova imagem
