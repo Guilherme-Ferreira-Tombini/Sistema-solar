@@ -86,9 +86,8 @@
   
 <style scoped>
   .three-container {
-    width: 300px;
-    height: 300px;
-   
+    width: 600px;
+    height: 460px;
   }
 </style>
   

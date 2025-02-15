@@ -11,9 +11,9 @@
           v-if="planets.length > 0" 
           :key="planets[currentIndex].Id" 
           :img="currentImage" 
-          :tamanho="4" 
-        />
-        
+          :tamanho="planets[currentIndex].Id === 10 ? 1.7 : planets[currentIndex].Id === 9 ? 3 : 2.6" 
+          :alt="planets[currentIndex].Name"
+        /> 
       </div>
   
       <div id="ir">
