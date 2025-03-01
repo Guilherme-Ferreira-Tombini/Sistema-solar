@@ -1,19 +1,22 @@
 <template>
-  <div class="container">
+  <div v-if="planets.length > 0" class="container">
     <div id="ir">
       <div class="botao" :class="{ disabled: currentIndex === 0 }" @click="prevPlanet">
         <img src="/esquerda.png" />
       </div>
     </div>
 
-    <div>
+    <div class="container-planet">
       <Planet 
-        v-if="planets.length > 0" 
         :key="planets[currentIndex].Id" 
         :img="currentImage" 
         :tamanho="planets[currentIndex].Id === 10 ? 1.7 : planets[currentIndex].Id === 9 ? 3 : 2.6"
       /> 
-      <h3>{{ currentName }}</h3>
+      <h3>
+          <a click="">
+            {{ currentName }}
+          </a>
+     </h3>
     </div>
 
     <div id="ir">
@@ -22,6 +25,7 @@
       </div>
     </div>
   </div>
+  <h3 v-else>Aterrissando nave....</h3>
 </template>
 
 <script lang="ts">
@@ -135,5 +139,18 @@ export default defineComponent({
 .botao.disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.container-planet{
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  
+}
+
+h3{
+  margin-top: 2px;
+  font-family: Michroma;
+  font-size: larger;
 }
 </style>
