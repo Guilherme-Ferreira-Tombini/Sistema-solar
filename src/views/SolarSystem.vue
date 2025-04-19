@@ -8,7 +8,6 @@
 import { defineComponent } from 'vue';
 import PlanetsSystem from '@/components/PlanetsSystem.vue';
 
-
   export default defineComponent({
     name: 'SolarSystem',
     components: {
@@ -24,6 +23,7 @@ import PlanetsSystem from '@/components/PlanetsSystem.vue';
     grid-column: 100%;
     width: 100%;
     justify-items: center;
+    align-items: center;
   }
 
 </style>

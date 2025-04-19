@@ -13,7 +13,7 @@
         :tamanho="planets[currentIndex].Id === 10 ? 1.7 : planets[currentIndex].Id === 9 ? 3 : 2.6"
       /> 
       <h3>
-          <a click="">
+          <a @click="toggle">
             {{ currentName }}
           </a>
      </h3>
@@ -26,12 +26,21 @@
     </div>
   </div>
   <h3 v-else>Aterrissando nave....</h3>
+  <div id="texto" ref="valor" v-show="showTextPlanet">
+    <TextPlanet 
+      :image="currentImage" 
+      :name="currentName" 
+      :description="currentDescription"
+      :element="valor"/>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
 import Planet from "./ThreeJS/Planet.vue";
+import TextPlanet from "./TextPlanet.vue";
 import api from "@/api/Api";
+import ToggleDetails from "./ToggleDetails";
 
 interface Planeta {
   Id: number;
@@ -44,6 +53,7 @@ export default defineComponent({
   name: "PlanetsSystem",
   components: {
     Planet,
+    TextPlanet,
   },
   setup() {
     const planets = ref<Planeta[]>([]);
@@ -51,6 +61,8 @@ export default defineComponent({
     const currentImage = ref<string>("");
     const currentName = ref<string>("");
     const currentDescription = ref<string>("");
+    const valor = ref<HTMLElement | undefined>(undefined);
+    const showTextPlanet = ref(false);
 
     const fetchPlanets = async () => {
       try {
@@ -93,6 +105,16 @@ export default defineComponent({
       }
     };
 
+    const toggle = () => {
+      valor.value = document.getElementById("texto") ?? undefined;
+      if (valor.value) {
+        ToggleDetails(valor.value);
+        showTextPlanet.value = true;
+      }
+    };
+
+
+
     onMounted(fetchPlanets);
 
     return {
@@ -103,6 +125,9 @@ export default defineComponent({
       currentDescription,
       nextPlanet,
       prevPlanet,
+      toggle,
+      valor,
+      showTextPlanet
     };
   },
 });
@@ -147,10 +172,12 @@ export default defineComponent({
   align-items: center;
   
 }
-
 h3{
   margin-top: 2px;
   font-family: Michroma;
   font-size: larger;
+}
+#texto {
+  display: none;
 }
 </style>
