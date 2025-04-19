@@ -13,7 +13,7 @@
   </template>
   
   <script lang="ts">
-    import { defineComponent, type PropType, type Ref } from 'vue';
+    import { defineComponent, type PropType} from 'vue';
     import ToggleDetails from './ToggleDetails';
 
     export default defineComponent({
